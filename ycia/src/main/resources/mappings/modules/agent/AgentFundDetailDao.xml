@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.agent.dao.AgentFundDetailDao">
+    
+	<sql id="agentFundDetailColumns">
+		a.id AS "id",
+		a.agent_id AS "agentId",
+		a.money AS "money",
+		a.trade_time AS "tradeTime",
+		a.img_url AS "imgUrl",
+		a.trade_type AS "tradeType",
+		a.trade_status AS "tradeStatus",
+		a.operate_by AS "operateBy"
+	</sql>
+	
+	<sql id="agentFundDetailJoins">
+	</sql>
+    
+	<select id="get" resultType="AgentFundDetail">
+		SELECT 
+			<include refid="agentFundDetailColumns"/>
+		FROM agent_fund_detail a
+		<include refid="agentFundDetailJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="getByAgentId" resultType="AgentFundDetail">
+		SELECT 
+			<include refid="agentFundDetailColumns"/>
+		FROM agent_fund_detail a
+		<include refid="agentFundDetailJoins"/>
+		WHERE a.agent_id = #{agentId}
+	</select>
+	
+	<select id="findList" resultType="AgentFundDetail">
+		SELECT 
+			<include refid="agentFundDetailColumns"/>
+		FROM agent_fund_detail a
+		<include refid="agentFundDetailJoins"/>
+		<where>
+			
+			<if test="id != null and id != ''">
+				AND a.id = #{id}
+			</if>
+			<if test="agentId != null and agentId != ''">
+				AND a.agent_id = #{agentId}
+			</if>
+			<if test="money != null and money != ''">
+				AND a.money = #{money}
+			</if>
+			<if test="tradeTime != null and tradeTime != ''">
+				AND a.trade_time = #{tradeTime}
+			</if>
+			<if test="imgUrl != null and imgUrl != ''">
+				AND a.img_url = #{imgUrl}
+			</if>
+			<if test="tradeType != null and tradeType != ''">
+				AND a.trade_type = #{tradeType}
+			</if>
+			<if test="tradeStatus != null and tradeStatus != ''">
+				AND a.trade_status = #{tradeStatus}
+			</if>
+			<if test="operateBy != null and operateBy != ''">
+				AND a.operate_by = #{operateBy}
+			</if>
+		</where>
+		ORDER BY a.trade_time DESC
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="AgentFundDetail">
+		SELECT 
+			<include refid="agentFundDetailColumns"/>
+		FROM agent_fund_detail a
+		<include refid="agentFundDetailJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO agent_fund_detail(
+			id,
+			agent_id,
+			money,
+			trade_time,
+			img_url,
+			trade_type,
+			trade_status,
+			operate_by
+		) VALUES (
+			#{id},
+			#{agentId},
+			#{money},
+			#{tradeTime},
+			#{imgUrl},
+			#{tradeType},
+			#{tradeStatus},
+			#{operateBy}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE agent_fund_detail SET 	
+			agent_id = #{agentId},
+			money = #{money},
+			trade_time = #{tradeTime},
+			img_url = #{imgUrl},
+			trade_type = #{tradeType},
+			trade_status = #{tradeStatus},
+			operate_by = #{operateBy}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM agent_fund_detail
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

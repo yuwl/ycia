@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.order.dao.OrderOfferDao">
+    
+	<sql id="orderOfferColumns">
+		a.id AS "id",
+		a.order_company_id AS "orderCompanyId",
+		a.product_name AS "productName",
+		a.order_id AS "orderId",
+		a.amonut AS "amonut",
+		a.premium AS "premium",
+		a.insur_type AS "insurType",
+		a.create_time AS "createTime",
+		a.create_by AS "createBy",
+		a.remarks AS "remarks"
+	</sql>
+	
+	<sql id="orderOfferJoins">
+	</sql>
+    
+	<select id="get" resultType="OrderOffer">
+		SELECT 
+			<include refid="orderOfferColumns"/>
+		FROM order_offer a
+		<include refid="orderOfferJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="OrderOffer">
+		SELECT 
+			<include refid="orderOfferColumns"/>
+		FROM order_offer a
+		<include refid="orderOfferJoins"/>
+		<where>
+			
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="OrderOffer">
+		SELECT 
+			<include refid="orderOfferColumns"/>
+		FROM order_offer a
+		<include refid="orderOfferJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO order_offer(
+			id,
+			order_company_id,
+			product_name,
+			order_id,
+			amonut,
+			premium,
+			insur_type,
+			create_time,
+			create_by,
+			remarks
+		) VALUES (
+			#{id},
+			#{orderCompanyId},
+			#{productName},
+			#{orderId},
+			#{amonut},
+			#{premium},
+			#{insurType},
+			#{createTime},
+			#{createBy},
+			#{remarks}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE order_offer SET 	
+			order_company_id = #{orderCompanyId},
+			product_name = #{productName},
+			order_id = #{orderId},
+			amonut = #{amonut},
+			premium = #{premium},
+			insur_type = #{insurType},
+			create_time = #{createTime},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM order_offer
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

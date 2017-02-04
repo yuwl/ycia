@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.pro.dao.ProZyMbaDao">
+    
+	<sql id="proZyMbaColumns">
+		a.id AS "id",
+		a.insur_product_id AS "insurProductId",
+		a.order_id AS "orderId",
+		a.enterprise_type AS "enterpriseType",
+		a.business_content AS "businessContent",
+		a.open_address AS "openAddress",
+		a.start_time AS "startTime",
+		a.end_time AS "endTime",
+		a.total_claim AS "totalClaim",
+		a.each_claim AS "eachClaim",
+		a.create_by AS "createBy",
+		a.create_time AS "createTime",
+		a.remarks AS "remarks"
+	</sql>
+	
+	<sql id="proZyMbaJoins">
+	</sql>
+    
+	<select id="get" resultType="ProZyMba">
+		SELECT 
+			<include refid="proZyMbaColumns"/>
+		FROM pro_zy_mba a
+		<include refid="proZyMbaJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="ProZyMba">
+		SELECT 
+			<include refid="proZyMbaColumns"/>
+		FROM pro_zy_mba a
+		<include refid="proZyMbaJoins"/>
+		<where>
+			
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="ProZyMba">
+		SELECT 
+			<include refid="proZyMbaColumns"/>
+		FROM pro_zy_mba a
+		<include refid="proZyMbaJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO pro_zy_mba(
+			id,
+			insur_product_id,
+			order_id,
+			enterprise_type,
+			business_content,
+			open_address,
+			start_time,
+			end_time,
+			total_claim,
+			each_claim,
+			create_by,
+			create_time,
+			remarks
+		) VALUES (
+			#{id},
+			#{insurProductId},
+			#{orderId},
+			#{enterpriseType},
+			#{businessContent},
+			#{openAddress},
+			#{startTime},
+			#{endTime},
+			#{totalClaim},
+			#{eachClaim},
+			#{createBy.name},
+			#{createTime},
+			#{remarks}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE pro_zy_mba SET 	
+			insur_product_id = #{insurProductId},
+			order_id = #{orderId},
+			enterprise_type = #{enterpriseType},
+			business_content = #{businessContent},
+			open_address = #{openAddress},
+			start_time = #{startTime},
+			end_time = #{endTime},
+			total_claim = #{totalClaim},
+			each_claim = #{eachClaim},
+			create_time = #{createTime},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM pro_zy_mba
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

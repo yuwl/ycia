@@ -1,0 +1,605 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.order.dao.OrderPolicyDao">
+    
+	<sql id="orderPolicyColumns">
+		a.id AS "id",
+		a.policy_no AS "policyNo",
+		a.order_id AS "orderId",
+		a.order_no AS "orderNo",
+		a.product_id AS "productId",
+		a.user_id AS "userId",
+		a.agent_id AS "agentId",
+		a.office_id AS "officeId",
+		a.premium AS "premium",
+		a.amonut AS "amonut",
+		a.start_time AS "startTime",
+		a.end_time AS "endTime",
+		a.last_no AS "lastNo",
+		a.insure_name AS "insureName",
+		a.insure_card_no AS "insureCardNo",
+		a.insure_phone AS "insurePhone",
+		a.insure_address AS "insureAddress",
+		a.insure_postcode AS "insurePostcode",
+		a.insure_email AS "insureEmail",
+		a.insured_name AS "insuredName",
+		a.insured_card_no AS "insuredCardNo",
+		a.insured_phone AS "insuredPhone",
+		a.insured_address AS "insuredAddress",
+		a.insured_postcode AS "insuredPostcode",
+		a.insured_email AS "insuredEmail",
+		a.benefit_name AS "benefitName",
+		a.benefit_card_no AS "benefitCardNo",
+		a.benefit_phone AS "benefitPhone",
+		a.benefit_address AS "benefitAddress",
+		a.benefit_postcode AS "benefitPostcode",
+		a.benefit_email AS "benefitEmail",
+		a.status AS "status",
+		a.create_time AS "createTime",
+		a.create_by AS "createBy",
+		a.remarks AS "remarks",
+		a.clent_id AS "clentId"
+	</sql>
+	
+	<sql id="orderPolicyColumns1">
+		a.id AS "id",
+		a.policy_no AS "policyNo",
+		a.order_id AS "orderId",
+		a.order_no AS "orderNo",
+		a.product_id AS "productId",
+		ip.product_name AS "productName",
+		a.user_id AS "userId",
+		<!-- a.agent_id AS "agentId", -->
+		ag.name AS "agentName",
+		a.office_id AS "officeId",
+		a.premium AS "premium",
+		a.amonut AS "amonut",
+		a.start_time AS "startTime",
+		a.end_time AS "endTime",
+		a.last_no AS "lastNo",
+		a.insure_name AS "insureName",
+		a.insure_card_no AS "insureCardNo",
+		a.insure_phone AS "insurePhone",
+		a.insure_address AS "insureAddress",
+		a.insure_postcode AS "insurePostcode",
+		a.insure_email AS "insureEmail",
+		a.insured_name AS "insuredName",
+		a.insured_card_no AS "insuredCardNo",
+		a.insured_phone AS "insuredPhone",
+		a.insured_address AS "insuredAddress",
+		a.insured_postcode AS "insuredPostcode",
+		a.insured_email AS "insuredEmail",
+		a.benefit_name AS "benefitName",
+		a.benefit_card_no AS "benefitCardNo",
+		a.benefit_phone AS "benefitPhone",
+		a.benefit_address AS "benefitAddress",
+		a.benefit_postcode AS "benefitPostcode",
+		a.benefit_email AS "benefitEmail",
+		a.status AS "status",
+		a.create_time AS "createTime",
+		a.create_by AS "createBy",
+		<!-- a.remarks AS "remarks" -->
+		a.clent_id AS "clentId"
+	</sql>
+	
+	<sql id="orderPolicyColumns2">
+		a.id AS "id",
+		a.policy_no AS "policyNo",
+		a.order_id AS "orderId",
+		a.order_no AS "orderNo",
+		<!-- a.product_id AS "productId", -->
+		ip.product_name AS "productId",
+		a.user_id AS "userId",
+		<!-- a.agent_id AS "agentId", -->
+		ag.name AS "agentId",
+		<!-- a.office_id AS "officeId", -->
+		so.name AS "officeId",
+		a.premium AS "premium",
+		a.amonut AS "amonut",
+		a.start_time AS "startTime",
+		a.end_time AS "endTime",
+		a.last_no AS "lastNo",
+		a.insure_name AS "insureName",
+		a.insure_card_no AS "insureCardNo",
+		a.insure_phone AS "insurePhone",
+		a.insure_address AS "insureAddress",
+		a.insure_postcode AS "insurePostcode",
+		a.insure_email AS "insureEmail",
+		a.insured_name AS "insuredName",
+		a.insured_card_no AS "insuredCardNo",
+		a.insured_phone AS "insuredPhone",
+		a.insured_address AS "insuredAddress",
+		a.insured_postcode AS "insuredPostcode",
+		a.insured_email AS "insuredEmail",
+		a.benefit_name AS "benefitName",
+		a.benefit_card_no AS "benefitCardNo",
+		a.benefit_phone AS "benefitPhone",
+		a.benefit_address AS "benefitAddress",
+		a.benefit_postcode AS "benefitPostcode",
+		a.benefit_email AS "benefitEmail",
+		a.status AS "status",
+		a.create_time AS "createTime",
+		a.create_by AS "createBy",
+		a.remarks AS "remarks",
+		a.clent_id AS "clentId"
+	</sql>
+	
+	<sql id="orderPolicyJoins">
+	</sql>
+    
+    <select id="get1" resultType="OrderPolicy">
+		SELECT 
+			<include refid="orderPolicyColumns2"/>
+		FROM order_policy a left outer join insur_product ip on a.product_id= ip.id left outer join agent ag on a.agent_id= ag.id 
+		left outer join sys_office so on a.office_id= so.id
+		<include refid="orderPolicyJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList1" resultType="OrderPolicy">
+		SELECT 
+			<include refid="orderPolicyColumns1"/>
+		FROM order_policy a 
+		left outer join insur_product ip on a.product_id= ip.id 
+		left outer join agent ag on a.agent_id= ag.id 
+		<include refid="orderPolicyJoins"/>
+		<where>
+			
+			<if test="id != null and id != ''">
+				AND a.id = #{id}
+			</if>
+			<if test="policyNo != null and policyNo != ''">
+				AND a.policy_no = #{policyNo}
+			</if>
+			<if test="orderId != null and orderId != ''">
+				AND a.order_id = #{orderId}
+			</if>
+			<if test="orderNo != null and orderNo != ''">
+				AND a.order_no = #{orderNo}
+			</if>
+			<if test="productId != null and productId != ''">
+				AND a.product_id = #{productId}
+			</if>
+			<if test="userId != null and userId != ''">
+				AND a.user_id = #{userId}
+			</if>
+			<if test="agentId != null and agentId != ''">
+				AND a.agent_id = #{agentId}
+			</if>
+			<if test="officeId != null and officeId != ''">
+				AND a.office_id = #{officeId}
+			</if>
+			<if test="premium != null and premium != ''">
+				AND a.premium = #{premium}
+			</if>
+			<if test="amonut != null and amonut != ''">
+				AND a.amonut = #{amonut}
+			</if>
+			<if test="startTime != null and startTime != ''">
+				AND a.start_time = #{startTime}
+			</if>
+			<if test="endTime != null and endTime != ''">
+				AND a.end_time = #{endTime}
+			</if>
+			<if test="lastNo != null and lastNo != ''">
+				AND a.last_no = #{lastNo}
+			</if>
+			<if test="insureName != null and insureName != ''">
+				AND a.insure_name = #{insureName}
+			</if>
+			<if test="insureCardNo != null and insureCardNo != ''">
+				AND a.insure_card_no = #{insureCardNo}
+			</if>
+			<if test="insurePhone != null and insurePhone != ''">
+				AND a.insure_phone = #{insurePhone}
+			</if>
+			<if test="insureAddress != null and insureAddress != ''">
+				AND a.insure_address = #{insureAddress}
+			</if>
+			<if test="insurePostcode != null and insurePostcode != ''">
+				AND a.insure_postcode = #{insurePostcode}
+			</if>
+			<if test="insureEmail != null and insureEmail != ''">
+				AND a.insure_email = #{insureEmail}
+			</if>
+			<if test="insuredName != null and insuredName != ''">
+				AND a.insured_name = #{insuredName}
+			</if>
+			<if test="insuredCardNo != null and insuredCardNo != ''">
+				AND a.insured_card_no = #{insuredCardNo}
+			</if>
+			<if test="insuredPhone != null and insuredPhone != ''">
+				AND a.insured_phone = #{insuredPhone}
+			</if>
+			<if test="insuredAddress != null and insuredAddress != ''">
+				AND a.insured_address = #{insuredAddress}
+			</if>
+			<if test="insuredPostcode != null and insuredPostcode != ''">
+				AND a.insured_postcode = #{insuredPostcode}
+			</if>
+			<if test="insuredEmail != null and insuredEmail != ''">
+				AND a.insured_email = #{insuredEmail}
+			</if>
+			<if test="benefitName != null and benefitName != ''">
+				AND a.benefit_name = #{benefitName}
+			</if>
+			<if test="benefitCardNo != null and benefitCardNo != ''">
+				AND a.benefit_card_no = #{benefitCardNo}
+			</if>
+			<if test="benefitPhone != null and benefitPhone != ''">
+				AND a.benefit_phone = #{benefitPhone}
+			</if>
+			<if test="benefitAddress != null and benefitAddress != ''">
+				AND a.benefit_address = #{benefitAddress}
+			</if>
+			<if test="benefitPostcode != null and benefitPostcode != ''">
+				AND a.benefit_postcode = #{benefitPostcode}
+			</if>
+			<if test="benefitEmail != null and benefitEmail != ''">
+				AND a.benefit_email = #{benefitEmail}
+			</if>
+			<if test="status != null and status != ''">
+				AND a.status = #{status}
+			</if>
+			<if test="createTime != null and createTime != ''">
+				AND a.create_time = #{createTime}
+			</if>
+			<if test="createBy != null and createBy != ''">
+				AND a.create_by = #{createBy}
+			</if>
+			<if test="remarks != null and remarks != ''">
+				AND a.remarks = #{remarks}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY a.${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+		ORDER BY a.create_time desc
+	</select>
+    
+	<select id="get" resultType="OrderPolicy">
+		SELECT 
+			<include refid="orderPolicyColumns"/>
+		FROM order_policy a
+		<include refid="orderPolicyJoins"/>
+		WHERE a.order_id = #{orderId}
+	</select>
+	
+	<select id="findList" resultType="OrderPolicy">
+		SELECT 
+			<include refid="orderPolicyColumns"/>
+		FROM order_policy a
+		<include refid="orderPolicyJoins"/>
+		<where>
+			
+			<if test="id != null and id != ''">
+				AND a.id = #{id}
+			</if>
+			<if test="policyNo != null and policyNo != ''">
+				AND a.policy_no = #{policyNo}
+			</if>
+			<if test="orderId != null and orderId != ''">
+				AND a.order_id = #{orderId}
+			</if>
+			<if test="orderNo != null and orderNo != ''">
+				AND a.order_no = #{orderNo}
+			</if>
+			<if test="productId != null and productId != ''">
+				AND a.product_id = #{productId}
+			</if>
+			<if test="userId != null and userId != ''">
+				AND a.user_id = #{userId}
+			</if>
+			<if test="agentId != null and agentId != ''">
+				AND a.agent_id = #{agentId}
+			</if>
+			<if test="officeId != null and officeId != ''">
+				AND a.office_id = #{officeId}
+			</if>
+			<if test="premium != null and premium != ''">
+				AND a.premium = #{premium}
+			</if>
+			<if test="amonut != null and amonut != ''">
+				AND a.amonut = #{amonut}
+			</if>
+			<if test="startTime != null and startTime != ''">
+				AND a.start_time = #{startTime}
+			</if>
+			<if test="endTime != null and endTime != ''">
+				AND a.end_time = #{endTime}
+			</if>
+			<if test="lastNo != null and lastNo != ''">
+				AND a.last_no = #{lastNo}
+			</if>
+			<if test="insureName != null and insureName != ''">
+				AND a.insure_name = #{insureName}
+			</if>
+			<if test="insureCardNo != null and insureCardNo != ''">
+				AND a.insure_card_no = #{insureCardNo}
+			</if>
+			<if test="insurePhone != null and insurePhone != ''">
+				AND a.insure_phone = #{insurePhone}
+			</if>
+			<if test="insureAddress != null and insureAddress != ''">
+				AND a.insure_address = #{insureAddress}
+			</if>
+			<if test="insurePostcode != null and insurePostcode != ''">
+				AND a.insure_postcode = #{insurePostcode}
+			</if>
+			<if test="insureEmail != null and insureEmail != ''">
+				AND a.insure_email = #{insureEmail}
+			</if>
+			<if test="insuredName != null and insuredName != ''">
+				AND a.insured_name = #{insuredName}
+			</if>
+			<if test="insuredCardNo != null and insuredCardNo != ''">
+				AND a.insured_card_no = #{insuredCardNo}
+			</if>
+			<if test="insuredPhone != null and insuredPhone != ''">
+				AND a.insured_phone = #{insuredPhone}
+			</if>
+			<if test="insuredAddress != null and insuredAddress != ''">
+				AND a.insured_address = #{insuredAddress}
+			</if>
+			<if test="insuredPostcode != null and insuredPostcode != ''">
+				AND a.insured_postcode = #{insuredPostcode}
+			</if>
+			<if test="insuredEmail != null and insuredEmail != ''">
+				AND a.insured_email = #{insuredEmail}
+			</if>
+			<if test="benefitName != null and benefitName != ''">
+				AND a.benefit_name = #{benefitName}
+			</if>
+			<if test="benefitCardNo != null and benefitCardNo != ''">
+				AND a.benefit_card_no = #{benefitCardNo}
+			</if>
+			<if test="benefitPhone != null and benefitPhone != ''">
+				AND a.benefit_phone = #{benefitPhone}
+			</if>
+			<if test="benefitAddress != null and benefitAddress != ''">
+				AND a.benefit_address = #{benefitAddress}
+			</if>
+			<if test="benefitPostcode != null and benefitPostcode != ''">
+				AND a.benefit_postcode = #{benefitPostcode}
+			</if>
+			<if test="benefitEmail != null and benefitEmail != ''">
+				AND a.benefit_email = #{benefitEmail}
+			</if>
+			<if test="status != null and status != ''">
+				AND a.status = #{status}
+			</if>
+			<if test="createTime != null and createTime != ''">
+				AND a.create_time = #{createTime}
+			</if>
+			<if test="createBy != null and createBy != ''">
+				AND a.create_by = #{createBy}
+			</if>
+			<if test="remarks != null and remarks != ''">
+				AND a.remarks = #{remarks}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="OrderPolicy">
+		SELECT 
+			<include refid="orderPolicyColumns"/>
+		FROM order_policy a
+		<include refid="orderPolicyJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO order_policy(
+			id,
+			policy_no,
+			order_id,
+			order_no,
+			product_id,
+			user_id,
+			agent_id,
+			office_id,
+			premium,
+			amonut,
+			start_time,
+			end_time,
+			last_no,
+			insure_name,
+			insure_card_no,
+			insure_phone,
+			insure_address,
+			insure_postcode,
+			insure_email,
+			insured_name,
+			insured_card_no,
+			insured_phone,
+			insured_address,
+			insured_postcode,
+			insured_email,
+			benefit_name,
+			benefit_card_no,
+			benefit_phone,
+			benefit_address,
+			benefit_postcode,
+			benefit_email,
+			status,
+			create_time,
+			create_by,
+			remarks,
+			clent_id
+		) VALUES (
+			#{id},
+			#{policyNo},
+			#{orderId},
+			#{orderNo},
+			#{productId},
+			#{userId},
+			#{agentId},
+			#{officeId},
+			#{premium},
+			#{amonut},
+			#{startTime},
+			#{endTime},
+			#{lastNo},
+			#{insureName},
+			#{insureCardNo},
+			#{insurePhone},
+			#{insureAddress},
+			#{insurePostcode},
+			#{insureEmail},
+			#{insuredName},
+			#{insuredCardNo},
+			#{insuredPhone},
+			#{insuredAddress},
+			#{insuredPostcode},
+			#{insuredEmail},
+			#{benefitName},
+			#{benefitCardNo},
+			#{benefitPhone},
+			#{benefitAddress},
+			#{benefitPostcode},
+			#{benefitEmail},
+			#{status},
+			#{createTime},
+			#{createBy.name},
+			#{remarks},
+			#{clentId}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE order_policy SET 	
+			policy_no = #{policyNo},
+			order_id = #{orderId},
+			order_no = #{orderNo},
+			product_id = #{productId},
+			user_id = #{userId},
+			agent_id = #{agentId},
+			office_id = #{officeId},
+			premium = #{premium},
+			amonut = #{amonut},
+			start_time = #{startTime},
+			end_time = #{endTime},
+			last_no = #{lastNo},
+			insure_name = #{insureName},
+			insure_card_no = #{insureCardNo},
+			insure_phone = #{insurePhone},
+			insure_address = #{insureAddress},
+			insure_postcode = #{insurePostcode},
+			insure_email = #{insureEmail},
+			insured_name = #{insuredName},
+			insured_card_no = #{insuredCardNo},
+			insured_phone = #{insuredPhone},
+			insured_address = #{insuredAddress},
+			insured_postcode = #{insuredPostcode},
+			insured_email = #{insuredEmail},
+			benefit_name = #{benefitName},
+			benefit_card_no = #{benefitCardNo},
+			benefit_phone = #{benefitPhone},
+			benefit_address = #{benefitAddress},
+			benefit_postcode = #{benefitPostcode},
+			benefit_email = #{benefitEmail},
+			status = #{status},
+			create_time = #{createTime},
+			create_by = #{createBy},
+			remarks = #{remarks},
+			clent_id = #{clentId}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM order_policy
+		WHERE id = #{id}
+	</update>
+	
+	<select id="getOrderPolicyPZm" resultType="OfferDto">
+		SELECT
+			*
+		FROM
+			order_policy op
+		LEFT JOIN pro_zy_mba pz ON op.order_id = pz.order_id
+		WHERE
+			op.order_id = #{orderId}
+		<!-- SELECT
+			oc.id as orderCompanyId,
+			oc.order_id,
+			oc.order_no,
+			oc.premium,
+			oc.amount,
+			oc.fee_rate,
+			oc.fee,
+			oc.rate,
+			oc.commission,
+			oc.`status`,
+			oc.company_id,
+			oc.offer,
+			oc.create_time,
+			oc.update_time,
+			oc.seal_cret,
+			oc.pay_cret,
+			os.user_id,
+			os.agent_id,
+			os.product_id,
+			os.office_id,
+			os.pay_time,
+			os.clent_id,
+			op.policy_no,
+			op.amonut,
+			op.last_no,
+			op.insure_name,
+			op.insure_card_no,
+			op.insure_phone,
+			op.insure_address,
+			op.insure_postcode,
+			op.insure_email,
+			op.insured_name,
+			op.insured_card_no,
+			op.insured_phone,
+			op.insured_address,
+			op.insured_postcode,
+			op.insured_email,
+			op.benefit_name,
+			op.benefit_card_no,
+			op.benefit_phone,
+			op.benefit_address,
+			op.benefit_postcode,
+			op.benefit_email,
+			pz.insur_product_id,
+			pz.enterprise_type,
+			pz.business_content,
+			pz.open_address,
+			pz.start_time,
+			pz.end_time,
+			pz.total_claim,
+			pz.each_claim
+		FROM
+			order_company oc
+		LEFT JOIN orders os ON oc.order_id = os.id
+		LEFT JOIN order_policy op ON oc.order_id = op.order_id
+		LEFT JOIN pro_zy_mba pz ON oc.order_id = pz.order_id
+		WHERE
+			oc.order_id = #{orderId}
+			and oc.`status` = '40'
+		ORDER BY
+			oc.create_time DESC -->
+	</select>
+</mapper>

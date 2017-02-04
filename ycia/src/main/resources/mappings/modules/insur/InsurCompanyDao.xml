@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.insur.dao.InsurCompanyDao">
+    
+	<sql id="insurCompanyColumns">
+		a.id AS "id",
+		a.company_name AS "companyName",
+		a.contacts AS "contacts",
+		a.phone AS "phone",
+		a.create_time AS "createTime"
+	</sql>
+	
+	<sql id="insurCompanyJoins">
+	</sql>
+    
+	<select id="get" resultType="InsurCompany">
+		SELECT 
+			<include refid="insurCompanyColumns"/>
+		FROM insur_company a
+		<include refid="insurCompanyJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="InsurCompany">
+		SELECT 
+			<include refid="insurCompanyColumns"/>
+		FROM insur_company a
+		<include refid="insurCompanyJoins"/>
+		<where>
+			
+			<if test="id != null and id != ''">
+				AND a.id = #{id}
+			</if>
+			<if test="companyName != null and companyName != ''">
+				AND a.company_name = #{companyName}
+			</if>
+			<if test="contacts != null and contacts != ''">
+				AND a.contacts = #{contacts}
+			</if>
+			<if test="phone != null and phone != ''">
+				AND a.phone = #{phone}
+			</if>
+			<if test="createTime != null and createTime != ''">
+				AND a.create_time = #{createTime}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="InsurCompany">
+		SELECT 
+			<include refid="insurCompanyColumns"/>
+		FROM insur_company a
+		<include refid="insurCompanyJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO insur_company(
+			id,
+			company_name,
+			contacts,
+			phone,
+			create_time
+		) VALUES (
+			#{id},
+			#{companyName},
+			#{contacts},
+			#{phone},
+			#{createTime}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE insur_company SET 	
+			company_name = #{companyName},
+			contacts = #{contacts},
+			phone = #{phone},
+			create_time = #{createTime}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM insur_company
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

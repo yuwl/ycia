@@ -1,0 +1,424 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.order.dao.OrderCompanyDao">
+    
+	<sql id="orderCompanyColumns">
+		a.id AS "id",
+		a.order_id AS "orderId",
+		a.order_no AS "orderNo",
+		a.premium AS "premium",
+		a.amount AS "amount",
+		a.fee_rate AS "feeRate",
+		a.fee AS "fee",
+		a.rate AS "rate",
+		a.commission AS "commission",
+		a.status AS "status",
+		a.company_id AS "companyId",
+		a.offer AS "offer",
+		a.create_by AS "createBy",
+		a.create_time AS "createTime",
+		a.update_by AS "updateBy",
+		a.update_time AS "updateTime",
+		a.remarks AS "remarks",
+		a.seal_cret AS "sealCret",
+		a.pay_cret AS "payCret"
+	</sql>
+	
+	<sql id="orderCompanyJoins">
+	</sql>
+    
+	<select id="get" resultType="OrderCompany">
+		SELECT 
+			<include refid="orderCompanyColumns"/>
+		FROM order_company a
+		<include refid="orderCompanyJoins"/>
+		WHERE a.order_id = #{orderId}
+	</select>
+	
+	<select id="findList" resultType="OrderCompany">
+		SELECT 
+			<include refid="orderCompanyColumns"/>
+		FROM order_company a
+		<include refid="orderCompanyJoins"/>
+		<where>
+			<if test="id != null and id != ''">
+				AND a.id = #{id}
+			</if>
+			<if test="orderId != null and orderId != ''">
+				AND a.order_id = #{orderId}
+			</if>
+			<if test="orderNo != null and orderNo != ''">
+				AND a.order_no = #{orderNo}
+			</if>
+			<if test="premium != null and premium != ''">
+				AND a.premium = #{premium}
+			</if>
+			<if test="amount != null and amount != ''">
+				AND a.amount = #{amount}
+			</if>
+			<if test="feeRate != null and feeRate != ''">
+				AND a.fee_rate = #{feeRate}
+			</if>
+			<if test="fee != null and fee != ''">
+				AND a.fee = #{fee}
+			</if>
+			<if test="rate != null and rate != ''">
+				AND a.rate = #{rate}
+			</if>
+			<if test="commission != null and commission != ''">
+				AND a.commission = #{commission}
+			</if>
+			<if test="status != null and status != ''">
+				AND a.status = #{status}
+			</if>
+			<if test="companyId != null and companyId != ''">
+				AND a.company_id = #{companyId}
+			</if>
+			<if test="offer != null and offer != ''">
+				AND a.offer = #{offer}
+			</if>
+			<if test="createBy != null and createBy != ''">
+				AND a.create_by = #{createBy}
+			</if>
+			<if test="createTime != null and createTime != ''">
+				AND a.create_time = #{createTime}
+			</if>
+			<if test="updateBy != null and updateBy != ''">
+				AND a.update_by = #{updateBy}
+			</if>
+			<if test="updateTime != null and updateTime != ''">
+				AND a.update_time = #{updateTime}
+			</if>
+			<if test="remarks != null and remarks != ''">
+				AND a.remarks = #{remarks}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="OrderCompany">
+		SELECT 
+			<include refid="orderCompanyColumns"/>
+		FROM order_company a
+		<include refid="orderCompanyJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO order_company(
+			id,
+			order_id,
+			order_no,
+			premium,
+			amount,
+			fee_rate,
+			fee,
+			rate,
+			commission,
+			status,
+			company_id,
+			offer,
+			create_by,
+			create_time,
+			update_by,
+			update_time,
+			remarks
+		) VALUES (
+			#{id},
+			#{orderId},
+			#{orderNo},
+			#{premium},
+			#{amount},
+			#{feeRate},
+			#{fee},
+			#{rate},
+			#{commission},
+			#{status},
+			#{companyId},
+			#{offer},
+			#{createBy.name},
+			#{createTime},
+			#{updateBy.name},
+			#{updateTime},
+			#{remarks}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE order_company SET 	
+			order_id = #{orderId},
+			order_no = #{orderNo},
+			premium = #{premium},
+			amount = #{amount},
+			fee_rate = #{feeRate},
+			fee = #{fee},
+			rate = #{rate},
+			commission = #{commission},
+			status = #{status},
+			company_id = #{companyId},
+			offer = #{offer},
+			create_time = #{createTime},
+			update_by = #{updateBy},
+			update_time = #{updateTime},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM order_company
+		WHERE id = #{id}
+	</update>
+	
+	<!-- 自定义SQL -->
+	
+	<!-- 报价人员看到所有订单相关的数据 -->
+	<select id="findLists" resultType="OfferDto" >
+		SELECT
+			oc.id as orderCompanyId,
+			oc.order_id,
+			oc.order_no,
+			oc.premium,
+			oc.amount,
+			oc.fee_rate,
+			oc.fee,
+			oc.rate,
+			oc.commission,
+			oc.`status`,
+			oc.company_id,
+			oc.offer,
+			oc.create_time,
+			oc.update_time,
+			os.user_id,
+			os.agent_id,
+			os.product_id,
+			os.office_id,
+			os.pay_time,
+			os.clent_id,
+			op.policy_no,
+			op.amonut,
+			op.last_no,
+			op.insure_name,
+			op.insure_card_no,
+			op.insure_phone,
+			op.insure_address,
+			op.insure_postcode,
+			op.insure_email,
+			op.insured_name,
+			op.insured_card_no,
+			op.insured_phone,
+			op.insured_address,
+			op.insured_postcode,
+			op.insured_email,
+			op.benefit_name,
+			op.benefit_card_no,
+			op.benefit_phone,
+			op.benefit_address,
+			op.benefit_postcode,
+			op.benefit_email,
+			pz.insur_product_id,
+			pz.enterprise_type,
+			pz.business_content,
+			pz.open_address,
+			pz.start_time,
+			pz.end_time,
+			pz.total_claim,
+			pz.each_claim
+		FROM
+			order_company oc
+		LEFT JOIN orders os ON oc.order_id = os.id
+		LEFT JOIN order_policy op ON oc.order_id = op.order_id
+		LEFT JOIN pro_zy_mba pz ON oc.order_id = pz.order_id
+		WHERE
+			oc.company_id = #{companyId}
+		ORDER BY
+			oc.create_time DESC
+	</select>
+	
+	<select id="queryOne" resultType="OfferDto" >
+		SELECT
+			oc.id as orderCompanyId,
+			oc.order_id,
+			oc.order_no,
+			oc.premium,
+			oc.amount,
+			oc.fee_rate,
+			oc.fee,
+			oc.rate,
+			oc.commission,
+			oc.`status`,
+			oc.company_id,
+			oc.offer,
+			oc.create_time,
+			oc.update_time,
+			oc.deductible,
+			oc.deductible_desc,
+			oc.seal_cret,
+			oc.pay_cret,
+			os.user_id,
+			os.agent_id,
+			os.product_id,
+			os.office_id,
+			os.pay_time,
+			os.clent_id,
+			op.policy_no,
+			op.amonut,
+			op.last_no,
+			op.insure_name,
+			op.insure_card_no,
+			op.insure_phone,
+			op.insure_address,
+			op.insure_postcode,
+			op.insure_email,
+			op.insured_name,
+			op.insured_card_no,
+			op.insured_phone,
+			op.insured_address,
+			op.insured_postcode,
+			op.insured_email,
+			op.benefit_name,
+			op.benefit_card_no,
+			op.benefit_phone,
+			op.benefit_address,
+			op.benefit_postcode,
+			op.benefit_email,
+			pz.insur_product_id,
+			pz.enterprise_type,
+			pz.business_content,
+			pz.open_address,
+			pz.start_time,
+			pz.end_time,
+			pz.total_claim,
+			pz.each_claim
+		FROM
+			order_company oc
+		LEFT JOIN orders os ON oc.order_id = os.id
+		LEFT JOIN order_policy op ON oc.order_id = op.order_id
+		LEFT JOIN pro_zy_mba pz ON oc.order_id = pz.order_id
+		WHERE
+			oc.company_id = #{companyId}
+			AND oc.order_id = #{orderId}
+		ORDER BY
+			oc.create_time DESC
+	</select>
+	
+	<update id="updateByOrderCompanyId">
+		UPDATE order_company
+		<trim prefix="set" suffixOverrides=",">
+			<if test="premium != null and premium != ''">premium = #{premium},</if>
+			<if test="amount != null and amount != ''">amount = #{amount},</if>
+			<if test="feeRate != null and feeRate != ''">fee_rate = #{feeRate},</if>
+			<if test="commission != null and commission != ''">commission = #{commission},</if>
+			<if test="deductible != null and deductible != ''">deductible = #{deductible},</if>
+			<if test="deductibleDesc != null and deductibleDesc != ''">deductible_desc = #{deductibleDesc},</if>
+			<if test="status != null and status != ''">status = #{status},</if>
+			<if test="updateTime != null and updateTime != ''">update_time = #{updateTime},</if>
+		</trim>			 	
+		<where> id=#{id} and company_id = #{companyId}</where>
+	</update>
+	
+	<select id="getOrderCompanyByIdCompanyId" resultType="OfferDto" >
+		SELECT
+			*
+		FROM
+			order_company oc
+		LEFT JOIN orders o ON oc.order_id = o.id
+		WHERE
+			oc.company_id = #{companyId}
+		AND oc.id = #{orderCompanyId}
+	</select>
+	
+	<select id="getDtoInfo" resultType="OfferDto">
+		SELECT
+			oc.id as orderCompanyId,
+			oc.order_id,
+			oc.order_no,
+			oc.premium,
+			oc.amount,
+			oc.fee_rate,
+			oc.fee,
+			oc.rate,
+			oc.commission,
+			oc.`status`,
+			oc.company_id,
+			oc.offer,
+			oc.create_time,
+			oc.update_time,
+			os.user_id,
+			os.agent_id,
+			os.product_id,
+			os.office_id,
+			os.pay_time,
+			os.clent_id,
+			op.policy_no,
+			op.amonut,
+			op.last_no,
+			op.insure_name,
+			op.insure_card_no,
+			op.insure_phone,
+			op.insure_address,
+			op.insure_postcode,
+			op.insure_email,
+			op.insured_name,
+			op.insured_card_no,
+			op.insured_phone,
+			op.insured_address,
+			op.insured_postcode,
+			op.insured_email,
+			op.benefit_name,
+			op.benefit_card_no,
+			op.benefit_phone,
+			op.benefit_address,
+			op.benefit_postcode,
+			op.benefit_email,
+			pz.insur_product_id,
+			pz.enterprise_type,
+			pz.business_content,
+			pz.open_address,
+			pz.start_time,
+			pz.end_time,
+			pz.total_claim,
+			pz.each_claim
+		FROM
+			order_company oc
+		LEFT JOIN orders os ON oc.order_id = os.id
+		LEFT JOIN order_policy op ON oc.order_id = op.order_id
+		LEFT JOIN pro_zy_mba pz ON oc.order_id = pz.order_id
+		WHERE
+			oc.company_id = #{companyId}
+			AND oc.order_id = #{orderId}
+		ORDER BY
+			oc.create_time DESC
+	</select>
+	
+	<update id="updateImage">
+		UPDATE order_company
+		<trim prefix="set" suffixOverrides=",">
+			<if test="premium != null and premium != ''">premium = #{premium},</if>
+			<if test="amount != null and amount != ''">amount = #{amount},</if>
+			<if test="feeRate != null and feeRate != ''">fee_rate = #{feeRate},</if>
+			<if test="commission != null and commission != ''">commission = #{commission},</if>
+			<if test="deductible != null and deductible != ''">deductible = #{deductible},</if>
+			<if test="deductibleDesc != null and deductibleDesc != ''">deductible_desc = #{deductibleDesc},</if>
+			<if test="sealCret != null and sealCret != ''">seal_cret = #{sealCret},</if>
+			<if test="payCret != null and payCret != ''">pay_cret = #{payCret},</if>
+			<if test="status != null and status != ''">status = #{status},</if>
+			<if test="updateTime != null and updateTime != ''">update_time = #{updateTime},</if>
+		</trim>			 	
+		<where> id=#{id} and company_id = #{companyId}</where>
+	</update>
+</mapper>
