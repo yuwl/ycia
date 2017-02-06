@@ -32,7 +32,6 @@ import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.common.utils.excel.ExportExcel;
 import com.thinkgem.jeesite.common.utils.excel.ImportExcel;
 import com.thinkgem.jeesite.common.web.BaseController;
-import com.thinkgem.jeesite.modules.people.service.CVRService;
 import com.thinkgem.jeesite.modules.sys.entity.Office;
 import com.thinkgem.jeesite.modules.sys.entity.Role;
 import com.thinkgem.jeesite.modules.sys.entity.User;
@@ -275,11 +274,6 @@ public class UserController extends BaseController {
 	@RequiresPermissions("user")
 	@RequestMapping(value = "info")
 	public String info(User user, HttpServletResponse response, Model model) {
-		
-		//测试CVR
-		CVRService.test();
-		
-		
 		User currentUser = UserUtils.getUser();
 		if (StringUtils.isNotBlank(user.getName())){
 			if(Global.isDemoMode()){
